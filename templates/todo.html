@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4">To-Do List</h1>
+
+    <!-- Add Task Form -->
+    <form method="POST" class="mb-4">
+        <div class="mb-3">
+            <label for="task" class="form-label">New Task</label>
+            <input type="text" class="form-control" id="task" name="task" required>
+        </div>
+        <button type="submit" name="add_task" class="btn btn-primary">Add Task</button>
+    </form>
+
+    <!-- Task List -->
+    <h2>Tasks</h2>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task[1] }}</td>
+                    <td>
+                        <form method="POST" style="display:inline;">
+                            <input type="hidden" name="task_id" value="{{ task[0] }}">
+                            <button type="submit" name="delete_task" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                        <button class="btn btn-warning btn-sm" onclick="editTask('{{ task[0] }}', '{{ task[1] }}')">Edit</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="editForm">
+                        <input type="hidden" name="task_id" id="editTaskId">
+                        <div class="mb-3">
+                            <label for="new_task" class="form-label">Task</label>
+                            <input type="text" class="form-control" id="new_task" name="new_task" required>
+                        </div>
+                        <button type="submit" name="update_task" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Edit Modal -->
+<script>
+    function editTask(taskId, taskText) {
+        document.getElementById('editTaskId').value = taskId;
+        document.getElementById('new_task').value = taskText;
+        new bootstrap.Modal(document.getElementById('editModal')).show();
+    }
+</script>
+{% endblock %}

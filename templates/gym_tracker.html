@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4">Gym Tracker</h1>
+
+    <!-- Add Workout Form -->
+    <form method="POST" class="mb-4">
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" class="form-control" id="date" name="date" required>
+        </div>
+        <div class="mb-3">
+            <label for="body_parts" class="form-label">Body Parts Worked On</label>
+            <input type="text" class="form-control" id="body_parts" name="body_parts" required>
+        </div>
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duration (minutes)</label>
+            <input type="number" class="form-control" id="duration" name="duration" required>
+        </div>
+        <div class="mb-3">
+            <label for="notes" class="form-label">Notes</label>
+            <textarea class="form-control" id="notes" name="notes"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Workout</button>
+    </form>
+
+    <!-- Workout History -->
+    <h2>Workout History</h2>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Body Parts</th>
+                    <th>Duration (minutes)</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for workout in workouts %}
+                <tr>
+                    <td>{{ workout[1] }}</td>
+                    <td>{{ workout[2] }}</td>
+                    <td>{{ workout[3] }}</td>
+                    <td>{{ workout[4] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

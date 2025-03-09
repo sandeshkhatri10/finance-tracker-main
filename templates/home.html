@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="home-background">
+    <div class="container">
+        <h1 class="text-center my-4">Weekly Summary</h1>
+
+        <!-- Weekly Summary Cards -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Income</h5>
+                        <p class="card-text">${{ '{:,.2f}'.format(weekly_income) }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-danger text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Expenses</h5>
+                        <p class="card-text">${{ '{:,.2f}'.format(weekly_expenses) }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Savings</h5>
+                        <p class="card-text">${{ '{:,.2f}'.format(weekly_savings) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Income vs Expenses</h2>
+                <canvas id="financeChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('financeChart').getContext('2d');
+    const financeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels | tojson }},
+            datasets: [{
+                label: 'Amount ($)',
+                data: {{ data | tojson }},
+                backgroundColor: ['#28a745', '#dc3545'],
+                borderColor: ['#28a745', '#dc3545'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
